@@ -1,0 +1,15 @@
+# Build artifacts
+*.pyc
+__pycache__/
+
+# TLS certificates (do not bake into image)
+certs/
+
+# Editor / OS artefacts
+.DS_Store
+.idea/
+*.swp
+*.swo
+
+# Runtime files
+*.log

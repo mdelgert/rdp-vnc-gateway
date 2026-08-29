@@ -1,0 +1,24 @@
+services:
+  rdp-vnc-gateway:
+    build: .
+    image: rdp-vnc-gateway:latest
+    container_name: rdp-vnc-gateway
+    restart: unless-stopped
+    ports:
+      # WARNING: Do NOT expose port 3389 directly to the public internet.
+      # Protect it with a VPN or firewall rule (e.g., allow only from trusted IPs).
+      - "127.0.0.1:3389:3389"
+    environment:
+      VNC_HOST: "${VNC_HOST}"          # required – hostname or IP of your VNC server
+      VNC_PORT: "${VNC_PORT:-5900}"    # optional – defaults to 5900
+      # Provide exactly one of the two credential options below:
+      VNC_PASSWORD: "${VNC_PASSWORD:-}"               # plain-text (use for quick tests only)
+      VNC_PASSWORD_FILE: "${VNC_PASSWORD_FILE:-}"     # path to a file containing the credential
+    volumes:
+      # Optional: mount your own TLS certificate and key to skip self-signed generation.
+      # - ./certs/tls.crt:/etc/xrdp/certs/tls.crt:ro
+      # - ./certs/tls.key:/etc/xrdp/certs/tls.key:ro
+      - xrdp-certs:/etc/xrdp/certs
+
+volumes:
+  xrdp-certs:
