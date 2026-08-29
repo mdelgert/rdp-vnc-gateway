@@ -1,0 +1,29 @@
+services:
+  gateway:
+    build: .
+    image: local/rdp-vnc-gateway:latest
+    environment:
+      VNC_HOST: yourhost
+      VNC_PORT: "5900"
+      # Omit both VNC_PASSWORD and VNC_PASSWORD_FILE when the VNC server has
+      # no password. Otherwise, prefer VNC_PASSWORD_FILE for deployments.
+      # VNC_PASSWORD: replace-with-your-vnc-password
+      # VNC_PASSWORD_FILE: /run/secrets/vnc_password
+    ports:
+      # Bind to localhost while testing. Put the gateway behind a VPN or change
+      # this deliberately to a restricted LAN address.
+      - "127.0.0.1:3390:3389"
+    # networks:
+    #   - rdp-vnc
+    restart: unless-stopped
+    # secrets:
+    #   - vnc_password
+
+# networks:
+#   rdp-vnc:
+#     external: true
+#     name: rdp-vnc
+
+# secrets:
+#   vnc_password:
+#     file: ./vnc_password.txt
